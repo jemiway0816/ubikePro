@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按鈕執行PHP</title>
+    <style>
+        #display {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        button {
+            margin-right: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="executeFunction('func1')">按鈕1</button>
+    <button onclick="executeFunction('func2')">按鈕2</button>
+    <button onclick="executeFunction('func3')">按鈕3</button>
+
+    <div id="display"></div>
+
+    <script>
+        function clearDisplay() {
+            document.getElementById('display').innerHTML = '';
+        }
+
+        function executeFunction(functionName) {
+            clearDisplay();
+
+            // 使用AJAX請求呼叫PHP文件
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "buttonTestPhp.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // 將PHP回傳的結果顯示在頁面上
+                    document.getElementById('display').innerHTML = xhr.responseText;
+                }
+            };
+
+            // 傳送要執行的函數名稱給PHP文件
+            xhr.send("functionName=" + functionName);
+        }
+    </script>
+
+</body>
+</html>

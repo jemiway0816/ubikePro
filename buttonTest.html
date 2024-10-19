@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按鈕執行函數</title>
+    <style>
+        #display {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        button {
+            margin-right: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="func1()">按鈕1</button>
+    <button onclick="func2()">按鈕2</button>
+    <button onclick="func3()">按鈕3</button>
+
+    <div id="display"></div>
+
+    <script>
+        function clearDisplay() {
+            // 清除顯示區域的內容
+            document.getElementById('display').innerHTML = '';
+        }
+
+        function func1() {
+            clearDisplay();
+            document.getElementById('display').innerHTML = '執行了 func1()';
+            // 在這裡執行func1的具體操作
+        }
+
+        function func2() {
+            clearDisplay();
+            document.getElementById('display').innerHTML = '執行了 func2()';
+            // 在這裡執行func2的具體操作
+        }
+
+        function func3() {
+            clearDisplay();
+            document.getElementById('display').innerHTML = '執行了 func3()';
+            // 在這裡執行func3的具體操作
+        }
+    </script>
+
+</body>
+</html>

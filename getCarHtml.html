@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubike 站點車況</title>
+    <style>
+        #display {
+            font-size: 16px;
+            margin-top: 50px;
+            background-color: #e6d2b5; /* 乳白色背景 */
+        }
+        button {
+            margin-right: 4px;
+            padding: 5px 5px;
+            font-size: 16px;
+            color: black; /* 設置按鈕文字為黑色 */
+        }
+
+        .fixed-buttons {
+            position: fixed;
+            top: 0px;    /* 距離螢幕頂部0px */
+     /*       left: 50%;    /* 居中對齊 */
+     /*       transform: translateX(-50%);  /* 將按鈕列水平居中 */
+            display: flex;  /* 讓按鈕排成一列 */
+            gap: 5px;   /* 按鈕之間的間距 */
+            /* z-index: 1000;  /* 保證按鈕在其他元素之上 */
+
+            background-color: white; /* 設置背景顏色 */
+            padding: 5px 50px; /* 確保背景擴展到按鈕之間的空隙 */
+     /*       border-radius: 8px; /* 圓角（可選） */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 陰影效果（可選）*/ 
+        }
+
+        .fixed-buttons button {
+            padding: 5px 0px;
+            cursor: pointer;            
+            /* 你可以在這裡添加更多按鈕的樣式 */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fixed-buttons">
+        <button onclick="executeFunction('func1')">常去</button>
+        <button onclick="executeFunction('func2')">O1</button>
+        <button onclick="executeFunction('func3')">O2-O4</button>
+        <button onclick="executeFunction('func4')">其他</button>
+    </div>
+    
+    <div id="display"></div> 
+
+    <script>
+
+        // 初始化一個變數來追踪最後按下的按鈕
+        let lastButtonClicked = null;
+
+        function clearDisplay() {
+            document.getElementById('display').innerHTML = '';
+
+        }
+
+        function executeFunction(functionName) {
+            clearDisplay();
+
+            // 使用AJAX請求呼叫PHP文件
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "getCarHtml.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // 將PHP回傳的結果顯示在頁面上
+                    document.getElementById('display').innerHTML = xhr.responseText;
+                }
+            };
+
+            lastButtonClicked = functionName;
+            resetTimer();
+
+            // 傳送要執行的函數名稱給PHP文件
+            xhr.send("functionName=" + functionName);
+        }
+
+        // 在頁面加載時自動執行 func1
+        window.onload = function() {
+            executeFunction('func1');
+        }
+
+        // 設置一個變量來存儲計時器
+        let timer = null;
+
+        // 定義一個重置計時器的函數
+        function resetTimer() {
+            // 清除已有的計時器
+            if (timer) {
+                clearInterval(timer);
+            }
+
+            // 設置新的計時器
+            timer = setInterval(function() {
+                if (lastButtonClicked === "func1") {
+                    executeFunction('func1');
+                } else if (lastButtonClicked === "func2") {
+                    executeFunction('func2');
+                } else if (lastButtonClicked === "func3") {
+                    executeFunction('func3');
+                } else if (lastButtonClicked === "func4") {
+                    executeFunction('func4');
+                }
+            }, 300000); // 5分鐘（300000毫秒）
+        }
+
+
+    </script>
+
+</body>
+</html>
